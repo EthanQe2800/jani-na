@@ -24,7 +24,7 @@ BOT_TOKEN   = os.getenv("BOT_TOKEN", "PUT_YOUR_NEW_TOKEN_HERE")
 ADMIN_IDS = [int(x.strip()) for x in os.getenv("ADMIN_IDS", "6814149557").split(",") if x.strip()]
 REQUIRED_CHANNELS = [
     {"id": -1001000000001, "name": "📢 Channel 1",  "link": "https://t.me/+O5WWlWDJp8NmNDY9"},
-    {"id": -1001000000002, "name": "📢 Channel 2",  "https://t.me/sscsuggesion100percent"},
+    {"id": -1001000000002, "name": "📢 Channel 2",  "link": "https://t.me/sscsuggesion100percent"},
     {"id": -1001000000003, "name": "📢 Channel 3",  "link": "https://t.me/+56MHks408YFkNzJl"},
     {"id": -1001000000004, "name": "📢 Channel 4",  "link": "https://t.me/givewayhub75"},
     {"id": -1001000000005, "name": "📢 Channel 5",  "link": "https://t.me/God_gifttaken"},
