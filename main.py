@@ -24,19 +24,19 @@ BOT_TOKEN   = os.getenv("BOT_TOKEN", "PUT_YOUR_NEW_TOKEN_HERE")
 ADMIN_IDS = [int(x.strip()) for x in os.getenv("ADMIN_IDS", "6814149557").split(",") if x.strip()]
 REQUIRED_CHANNELS = [
     {"id": -1001000000001, "name": "📢 Channel 1",  "link": "https://t.me/+O5WWlWDJp8NmNDY9"},
-    {"id": -1001000000002, "name": "📢 Channel 2",  "link": "https://t.me/yourchannel2"},
-    {"id": -1001000000003, "name": "📢 Channel 3",  "link": "https://t.me/yourchannel3"},
-    {"id": -1001000000004, "name": "📢 Channel 4",  "link": "https://t.me/yourchannel4"},
-    {"id": -1001000000005, "name": "📢 Channel 5",  "link": "https://t.me/yourchannel5"},
-    {"id": -1001000000006, "name": "📢 Channel 6",  "link": "https://t.me/yourchannel6"},
-    {"id": -1001000000007, "name": "📢 Channel 7",  "link": "https://t.me/yourchannel7"},
-    {"id": -1001000000008, "name": "📢 Channel 8",  "link": "https://t.me/yourchannel8"},
-    {"id": -1001000000009, "name": "📢 Channel 9",  "link": "https://t.me/yourchannel9"},
-    {"id": -1001000000010, "name": "📢 Channel 10", "link": "https://t.me/yourchannel10"},
+    {"id": -1001000000002, "name": "📢 Channel 2",  "https://t.me/sscsuggesion100percent"},
+    {"id": -1001000000003, "name": "📢 Channel 3",  "link": "https://t.me/+56MHks408YFkNzJl"},
+    {"id": -1001000000004, "name": "📢 Channel 4",  "link": "https://t.me/givewayhub75"},
+    {"id": -1001000000005, "name": "📢 Channel 5",  "link": "https://t.me/God_gifttaken"},
+    {"id": -1001000000006, "name": "📢 Channel 6",  "link": "https://t.me/+6NcPWNtUhU9iZTA1"},
+    {"id": -1001000000007, "name": "📢 Channel 7",  "link": "https://t.me/onlymethodstar"},
+    {"id": -1001000000008, "name": "📢 Channel 8",  "link": "https://t.me/auraytff"},
+    {"id": -1001000000009, "name": "📢 Channel 9",  "link": "https://t.me/+0olqjDjIPlo5ZDZl"},
+    {"id": -1001000000010, "name": "📢 Channel 10", "link": "https://t.me/methodwithcrash"},
 ]
 
-YOUTUBE_LINK        = "https://www.youtube.com/@C_F___EDITZ"
-YOUTUBE_NAME        = "C_F___EDITZ"
+YOUTUBE_LINK        = "https://www.youtube.com/@starhubyt_pro"
+YOUTUBE_NAME        = "starhubyt_pro"
 REFERRAL_REWARD     = 10
 DAILY_BONUS_BASE    = 5
 MIN_WITHDRAW_STARS  = 500
