@@ -87,6 +87,13 @@ async def init_db():
                 processed_at TEXT DEFAULT NULL
             )""")
         await db.execute("""
+            CREATE TABLE IF NOT EXISTS referral_rewards (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                new_user_id INTEGER UNIQUE,
+                referrer_id INTEGER,
+                given_at TEXT DEFAULT CURRENT_TIMESTAMP
+            )""")
+        await db.execute("""
             CREATE TABLE IF NOT EXISTS spin_logs (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 user_id INTEGER, reward INTEGER,
@@ -417,6 +424,49 @@ async def check_cb(call: CallbackQuery):
         await call.message.edit_text(text, reply_markup=channel_kb(not_joined), parse_mode="HTML")
         await call.answer("❌ Not done yet!")
     else:
+        # ✅ সব channel join করেছে — referral reward দাও যদি না দেওয়া হয়
+        user = await get_user(uid)
+
+        # Check if referral reward not given yet
+        if user and user["referred_by"] and user["referred_by"] != 0:
+            ref_id = user["referred_by"]
+            # Check if reward already given (balance > 0 means already rewarded)
+            # Use a safer check — see if referrer exists and give reward only once
+            already_rewarded = await db_get(
+                "SELECT id FROM referral_rewards WHERE new_user_id=?", (uid,)
+            )
+            if not already_rewarded:
+                referrer = await get_user(ref_id)
+                if referrer and not referrer["is_banned"]:
+                    await add_referral(ref_id, REFERRAL_REWARD)
+                    await db_run(
+                        "INSERT OR IGNORE INTO referral_rewards (new_user_id, referrer_id) VALUES (?,?)",
+                        (uid, ref_id)
+                    )
+                    updated = await get_user(ref_id)
+                    new_refs = updated["referrals"]
+                    badge = get_badge(new_refs)
+                    await set_badge(ref_id, badge)
+                    if new_refs in REFERRAL_MILESTONES:
+                        m = REFERRAL_MILESTONES[new_refs]
+                        await add_stars(ref_id, m["bonus"])
+                        try:
+                            await call.bot.send_message(
+                                ref_id,
+                                f"🎉 <b>Milestone!</b> {new_refs} referrals reached!\n"
+                                f"🎁 Bonus: +{m['bonus']} Stars\n🏅 Badge: {m['badge']}",
+                                parse_mode="HTML")
+                        except: pass
+                    else:
+                        try:
+                            await call.bot.send_message(
+                                ref_id,
+                                f"🎉 <b>{call.from_user.full_name}</b> joined via your link!\n"
+                                f"⭐ +{REFERRAL_REWARD} Stars earned!\n"
+                                f"👥 Total referrals: <b>{new_refs}</b>",
+                                parse_mode="HTML")
+                        except: pass
+
         await call.answer("✅ All channels verified!")
         user = await get_user(uid)
         total_users = await get_total_users()
@@ -797,7 +847,7 @@ async def news_cb(call: CallbackQuery):
 @router.callback_query(F.data == "support")
 async def support_cb(call: CallbackQuery):
     await call.message.edit_text(
-        f"🆘 <b>Support</b>\n\n👤 Admin: @Soolest\n⏰ Response: 24 hours\n\n🆔 Your ID: <code>{call.from_user.id}</code>",
+        f"🆘 <b>Support</b>\n\n👤 Admin: @your_admin_username\n⏰ Response: 24 hours\n\n🆔 Your ID: <code>{call.from_user.id}</code>",
         reply_markup=back_kb(), parse_mode="HTML")
     await call.answer()
 
