@@ -797,7 +797,7 @@ async def news_cb(call: CallbackQuery):
 @router.callback_query(F.data == "support")
 async def support_cb(call: CallbackQuery):
     await call.message.edit_text(
-        f"🆘 <b>Support</b>\n\n👤 Admin: @your_admin_username\n⏰ Response: 24 hours\n\n🆔 Your ID: <code>{call.from_user.id}</code>",
+        f"🆘 <b>Support</b>\n\n👤 Admin: @Soolest\n⏰ Response: 24 hours\n\n🆔 Your ID: <code>{call.from_user.id}</code>",
         reply_markup=back_kb(), parse_mode="HTML")
     await call.answer()
 
