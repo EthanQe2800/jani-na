@@ -21,8 +21,7 @@ logger = logging.getLogger(__name__)
 #  CONFIG — এখানে তোমার সব তথ্য বসাও
 # ============================================================
 BOT_TOKEN   = os.getenv("BOT_TOKEN", "PUT_YOUR_NEW_TOKEN_HERE")
-ADMIN_IDS   = [int(x) for x in os.getenv("ADMIN_IDS", "6814149557").split(",")]
-
+ADMIN_IDS = [int(x.strip()) for x in os.getenv("ADMIN_IDS", "6814149557").split(",") if x.strip()]
 REQUIRED_CHANNELS = [
     {"id": -1001000000001, "name": "📢 Channel 1",  "link": "https://t.me/+O5WWlWDJp8NmNDY9"},
     {"id": -1001000000002, "name": "📢 Channel 2",  "link": "https://t.me/yourchannel2"},
