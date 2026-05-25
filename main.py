@@ -21,22 +21,22 @@ logger = logging.getLogger(__name__)
 #  CONFIG — এখানে তোমার সব তথ্য বসাও
 # ============================================================
 BOT_TOKEN   = os.getenv("BOT_TOKEN", "PUT_YOUR_NEW_TOKEN_HERE")
-ADMIN_IDS = [int(x.strip()) for x in os.getenv("ADMIN_IDS", "6814149557").split(",") if x.strip()]
-REQUIRED_CHANNELS = [
-    {"id": -1001000000001, "name": "📢 Channel 1",  "link": "https://t.me/+O5WWlWDJp8NmNDY9"},
-    {"id": -1001000000002, "name": "📢 Channel 2",  "link": "https://t.me/sscsuggesion100percent"},
-    {"id": -1001000000003, "name": "📢 Channel 3",  "link": "https://t.me/+56MHks408YFkNzJl"},
-    {"id": -1001000000004, "name": "📢 Channel 4",  "link": "https://t.me/givewayhub75"},
-    {"id": -1001000000005, "name": "📢 Channel 5",  "link": "https://t.me/God_gifttaken"},
-    {"id": -1001000000006, "name": "📢 Channel 6",  "link": "https://t.me/+6NcPWNtUhU9iZTA1"},
-    {"id": -1001000000007, "name": "📢 Channel 7",  "link": "https://t.me/onlymethodstar"},
-    {"id": -1001000000008, "name": "📢 Channel 8",  "link": "https://t.me/auraytff"},
-    {"id": -1001000000009, "name": "📢 Channel 9",  "link": "https://t.me/+0olqjDjIPlo5ZDZl"},
-    {"id": -1001000000010, "name": "📢 Channel 10", "link": "https://t.me/methodwithcrash"},
-]
+ADMIN_IDS   = [int(x) for x in os.getenv("ADMIN_IDS", "6814149557").split(",")]
 
+REQUIRED_CHANNELS = [
+    {"id": -1002171293993, "name": "📢 Channel 1",  "link": "https://t.me/+O5WWlWDJp8NmNDY9"},
+    {"id": -1003967522498, "name": "📢 Channel 2",  "link": "https://t.me/sscsuggesion100percent"},
+    {"id": -1003915990814, "name": "📢 Channel 3",  "link": "https://t.me/+56MHks408YFkNzJl"},
+    {"id": -1003981803402, "name": "📢 Channel 4",  "link": "https://t.me/givewayhub75"},
+    {"id": -1003925815027, "name": "📢 Channel 5",  "link": "https://t.me/God_gifttaken"},
+    {"id": -1003792704399, "name": "📢 Channel 6",  "link": "https://t.me/+6NcPWNtUhU9iZTA1"},
+    {"id": -1003870696375, "name": "📢 Channel 7",  "link": "https://t.me/onlymethodstar"},
+    {"id": -1003923737600, "name": "📢 Channel 8",  "link": "https://t.me/auraytff"},
+    {"id": -1003927114110, "name": "📢 Channel 9",  "link": "https://t.me/prohithu"},
+    {"id": -1003785063763, "name": "📢 Channel 10", "link": "https://t.me/methodwithcrash"},
+]
 YOUTUBE_LINK        = "https://www.youtube.com/@starhubyt_pro"
-YOUTUBE_NAME        = "starhubyt_pro"
+YOUTUBE_NAME        = "starhubyt pro"
 REFERRAL_REWARD     = 10
 DAILY_BONUS_BASE    = 5
 MIN_WITHDRAW_STARS  = 500
@@ -210,9 +210,20 @@ async def check_channels(bot: Bot, uid: int):
     for ch in REQUIRED_CHANNELS:
         try:
             m = await bot.get_chat_member(ch["id"], uid)
-            (joined if m.status in ("member","administrator","creator") else not_joined).append(ch)
-        except:
-            not_joined.append(ch)
+            if m.status in ("member", "administrator", "creator"):
+                joined.append(ch)
+            elif m.status in ("left", "kicked", "restricted", "banned"):
+                not_joined.append(ch)
+            else:
+                not_joined.append(ch)
+        except Exception as e:
+            err = str(e).lower()
+            # যদি channel ID ভুল হয় বা bot admin না হয় — skip করো
+            if "chat not found" in err or "bot is not a member" in err or "peer_id_invalid" in err:
+                # Channel check করা যাচ্ছে না — joined ধরো যাতে block না হয়
+                joined.append(ch)
+            else:
+                not_joined.append(ch)
     return joined, not_joined
 
 # ============================================================
